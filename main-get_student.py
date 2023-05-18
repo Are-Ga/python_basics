@@ -28,28 +28,36 @@ class Student:
     # getter
     @property
     def house(self):
+        # notice, we need to use a new variable name in order to avoid conflict.
+        # the convention is to use underscore to indicate that is "almost" the same
         return self._house()
 
     # setter
     @house.setter
+    # function that will be accessed instead of the atribute house itself when calling student.house
+    # highly useful error checking and avoiding circumventing the checker at initiation of the class
+    # this will be called when initializing the class.
     def house(self, house):
         if not house in ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]:
             raise ValueError("Invalid House")
         self._house = house
 
-    # introduced a classmethod to replace the get_student() function from before
-    # this in order to collect all the relevant code that applies to the Students class
-    @classmethod
-    def get(cls):
-        name = input("Name? ")
-        house = input("House? ")
-        return cls(name, house)
-
-
 
 def main():
-    student = Student.get()
+    student = get_student()
+    # following line will break the program due to the validation:
+    # student.house = "Number Four, Privet Drive"
+
+    # on closing remarks, we are still able to change the student._house variable
+    # however the convention is to never touch variables starting with underscore.
+
     print(student)
+
+
+def get_student():
+    name = input("Name? ")
+    house = input("House? ")
+    return Student(name, house)
 
 # make sure to run program only when called directly, not when imported
 if __name__ == "__main__":
